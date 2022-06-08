@@ -1,0 +1,39 @@
+name: 'Update manifests'
+description: 'Create micro service release'
+inputs:
+
+  token:
+    description: 'GitHub token'
+    required: true
+
+  version:
+    description: 'Release version'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Configure git
+      shell: bash
+      run: |
+        git config --global user.email "devops@sysarb.se"
+        git config --global user.name "Sysarb"
+
+    - uses: actions/checkout@v2
+      with:
+        ref: 'refs/heads/main'
+        token: ${{ inputs.token }}
+
+    - name: Set version
+      shell: bash
+      run: |
+        npm version ${{ inputs.version }}
+      env:
+        NPM_TOKEN: ${{ inputs.token }}
+
+    - name: Push new version
+      shell: bash
+      run: |
+        git push
+      env:
+        GIT_TOKEN: ${{ inputs.token }}
