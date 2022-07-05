@@ -28,7 +28,7 @@ runs:
     - name: Set version
       shell: bash
       run: |
-        npm version ${{ inputs.version }}
+        npm version ${{ inputs.version }} --allow-same-version
       env:
         NPM_TOKEN: ${{ inputs.token }}
 
