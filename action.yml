@@ -19,7 +19,8 @@ runs:
         git config --global user.email "devops@sysarb.se"
         git config --global user.name "Sysarb"
 
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
       with:
         ref: 'refs/heads/main'
         token: ${{ inputs.token }}
@@ -32,6 +33,7 @@ runs:
         NPM_TOKEN: ${{ inputs.token }}
 
     - name: Push new version
+      if: "!contains(inputs.version, '-rc')"
       shell: bash
       run: |
         git push
